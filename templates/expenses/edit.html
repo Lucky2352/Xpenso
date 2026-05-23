@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card" style="max-width: 560px; margin: 0 auto;">
+    <h2>Edit Expense</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row" style="flex-direction: column;">
+            {% for field in form %}
+            <div style="display:flex; flex-direction:column; gap:4px;">
+                <label style="font-size:0.85rem; color:#555;">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <div style="display:flex; gap:10px; margin-top:8px;">
+                <button type="submit" class="btn btn-dark">Save Changes</button>
+                <a href="{% url 'index' %}" class="btn" style="background:#eee; color:#333; text-decoration:none;">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

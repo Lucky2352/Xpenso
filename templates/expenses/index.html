@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat-box">
+        <div class="label">Total Spent</div>
+        <div class="value">₹{{ total }}</div>
+    </div>
+    <div class="stat-box">
+        <div class="label">Transactions</div>
+        <div class="value">{{ expenses.count }}</div>
+    </div>
+</div>
+
+<!-- Add Expense -->
+<div class="card">
+    <h2>Add Expense</h2>
+    <form method="post" action="{% url 'add_expense' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.title }}
+            {{ form.amount }}
+            {{ form.category }}
+            {{ form.date }}
+            {{ form.note }}
+            <button type="submit" class="btn btn-dark">+ Add</button>
+        </div>
+    </form>
+</div>
+
+<!-- Category Breakdown -->
+{% if breakdown %}
+<div class="card">
+    <h2>By Category</h2>
+    <ul class="breakdown-list">
+        {% for item in breakdown %}
+        <li>
+            <span class="badge badge-{{ item.category }}">{{ item.category }}</span>
+            <strong>₹{{ item.total }}</strong>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Expense List -->
+<div class="card">
+    <h2>Expenses</h2>
+
+    <div class="filter-bar">
+        <form method="get">
+            <select name="category" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                {% for val, label in form.fields.category.choices %}
+                    <option value="{{ val }}" {% if val == selected_category %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        {% if selected_category %}
+            <a href="{% url 'index' %}" class="btn btn-dark" style="text-decoration:none; font-size:0.85rem;">Clear</a>
+        {% endif %}
+    </div>
+
+    {% if expenses %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Note</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.title }}</td>
+                <td><strong>₹{{ expense.amount }}</strong></td>
+                <td><span class="badge badge-{{ expense.category }}">{{ expense.category }}</span></td>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.note|default:"-" }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'edit_expense' expense.pk %}" class="btn btn-edit">Edit</a>
+                        <form method="post" action="{% url 'delete_expense' expense.pk %}" onsubmit="return confirm('Delete this expense?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">No expenses found.</div>
+    {% endif %}
+</div>
+
+{% endblock %}

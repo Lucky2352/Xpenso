@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        nav {
+            background: #2c3e50;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav h1 {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        nav span {
+            color: #95a5a6;
+            font-size: 0.85rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 32px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            flex: 1;
+            min-width: 140px;
+            padding: 9px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            border-color: #2c3e50;
+        }
+
+        .btn {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-dark { background: #2c3e50; color: #fff; }
+        .btn-dark:hover { background: #1a252f; }
+        .btn-danger { background: #e74c3c; color: #fff; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-edit { background: #f39c12; color: #fff; }
+        .btn-edit:hover { background: #d68910; }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            flex: 1;
+            min-width: 160px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .stat-box .label { font-size: 0.8rem; color: #888; margin-bottom: 6px; }
+        .stat-box .value { font-size: 1.6rem; font-weight: 700; color: #2c3e50; }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            color: #555;
+            font-weight: 600;
+            border-bottom: 2px solid #eee;
+        }
+
+        tbody tr:hover { background: #fafafa; }
+
+        tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        .badge-Food       { background: #fdebd0; color: #e67e22; }
+        .badge-Transport  { background: #d5f5e3; color: #27ae60; }
+        .badge-Shopping   { background: #d6eaf8; color: #2980b9; }
+        .badge-Bills      { background: #f9ebea; color: #e74c3c; }
+        .badge-Health     { background: #e8daef; color: #8e44ad; }
+        .badge-Other      { background: #eaecee; color: #555; }
+
+        .actions { display: flex; gap: 8px; }
+
+        .breakdown-list { list-style: none; }
+        .breakdown-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+
+        .empty { text-align: center; color: #aaa; padding: 32px 0; font-size: 0.95rem; }
+
+        @media (max-width: 600px) {
+            .form-row input, .form-row select { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>💰 Expense Tracker</h1>
+        {% if user.is_authenticated %}
+        <div style="display:flex; align-items:center; gap:16px;">
+            <span style="color:#95a5a6; font-size:0.85rem;">👤 {{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" style="background:none; border:1px solid #95a5a6; color:#95a5a6; padding:5px 14px; border-radius:5px; cursor:pointer; font-size:0.82rem;">Logout</button>
+            </form>
+        </div>
+        {% else %}
+        <div style="display:flex; gap:10px;">
+            <a href="{% url 'login' %}" style="color:#95a5a6; font-size:0.85rem; text-decoration:none;">Login</a>
+            <a href="{% url 'register' %}" style="color:#fff; font-size:0.85rem; text-decoration:none;">Register</a>
+        </div>
+        {% endif %}
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

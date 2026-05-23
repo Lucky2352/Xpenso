@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Expense Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #f0f2f5;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #fff;
+        }
+
+        .left-panel .icon { font-size: 4rem; margin-bottom: 20px; }
+
+        .left-panel h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .left-panel p {
+            font-size: 0.95rem;
+            color: #95a5a6;
+            text-align: center;
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .steps {
+            margin-top: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.88rem;
+            color: #bdc3c7;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-box h1 {
+            font-size: 1.6rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .auth-box .subtitle {
+            font-size: 0.88rem;
+            color: #888;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.83rem;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            outline: none;
+            color: #333;
+            transition: border 0.2s, box-shadow 0.2s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            border-color: #2c3e50;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(44,62,80,0.08);
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.78rem;
+            margin-top: 5px;
+        }
+
+        .help-text {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover { background: #1a252f; }
+
+        .divider {
+            text-align: center;
+            margin: 22px 0;
+            position: relative;
+            color: #bbb;
+            font-size: 0.82rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .login-cta {
+            text-align: center;
+            padding: 14px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: #666;
+        }
+
+        .login-cta a {
+            color: #2c3e50;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-cta a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .left-panel { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-panel">
+        <div class="icon">💰</div>
+        <h2>Get Started</h2>
+        <p>Create your free account and start tracking expenses in minutes.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-text">Register with a username & password</div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-text">Login to your personal dashboard</div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-text">Add and track your expenses</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="auth-box">
+            <h1>Create Account ✨</h1>
+            <p class="subtitle">Fill in the details below to get started</p>
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-msg">{{ field.errors.0 }}</div>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <div class="help-text">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn-submit">Create Account →</button>
+            </form>
+
+            <div class="divider">Already registered?</div>
+
+            <div class="login-cta">
+                Have an account? <a href="{% url 'login' %}">Login here</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
